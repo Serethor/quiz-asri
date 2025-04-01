@@ -14,17 +14,17 @@ module.exports = async (req, res) => {
   const prompt = `
 Le risposte dell'utente sono: ${JSON.stringify(risposte)}.
 
-Elenco dei cani disponibili:
-- Maya: giovane, tranquilla, vive con gatta, non adatta a bambini.
-- Thor: sensibile ai rumori, non ama contesti urbani.
-- Django: ha epilessia, adatto a contesti tranquilli.
-- Blue: ha bisogno di guida e tempo per adattarsi, no gatti.
-- Ziggy: indipendente, richiede fiducia e spazio, non abituato ai bambini.
-- Polpetta: ex maltrattato, no bambini o cani maschi.
-- Ron, Draco e Sirius: fratelli equilibrati, vivono in campagna, abituati a persone e bambini.
+Elenco dei cani disponibili (con link alla loro scheda):
+- Maya: giovane, tranquilla, vive con gatta, non adatta a bambini. Scheda: https://asritalia.com/adotta-ora/maya
+- Thor: sensibile ai rumori, non ama contesti urbani. Scheda: https://asritalia.com/adotta-ora/thor
+- Django: ha epilessia, adatto a contesti tranquilli. Scheda: https://asritalia.com/adotta-ora/django
+- Blue: ha bisogno di guida e tempo per adattarsi, no gatti. Scheda: https://asritalia.com/adotta-ora/blue
+- Ziggy: indipendente, richiede fiducia e spazio, non abituato ai bambini. Scheda: https://asritalia.com/adotta-ora/ziggy
+- Polpetta: ex maltrattato, no bambini o cani maschi. Scheda: https://asritalia.com/adotta-ora/polpetta
+- Ron, Draco e Sirius: fratelli equilibrati, vivono in campagna, abituati a persone e bambini. Scheda: https://asritalia.com/adotta-ora/ron-draco-sirius
 
 In base alle risposte dell'utente, suggerisci TUTTI i cani compatibili (anche più di uno se possibile). 
-Per ciascun cane suggerito, spiega brevemente perché potrebbe essere adatto.
+Per ciascun cane suggerito, spiega brevemente perché potrebbe essere adatto e inserisci anche il link alla sua scheda.
 Se nessuno dei cani è compatibile, rispondi con gentilezza che al momento non ci sono cani perfetti ma potremmo ricontattarlo in futuro.
 Scrivi tutto in tono dolce, empatico e in italiano.
 `;
