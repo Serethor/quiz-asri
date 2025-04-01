@@ -18,7 +18,7 @@ module.exports = async (req, res) => {
       compatibileCon: ["maschi"],
       gatti: true,
       bambini: false,
-      attivita: "media",
+      attivita: "adattabile",
       link: "https://asritalia.com/adotta-ora/maya",
       descrizione: "Maya è una femmina tranquilla, vive con gatta, non adatta a bambini."
     },
@@ -48,7 +48,7 @@ module.exports = async (req, res) => {
       compatibileCon: ["femmine"],
       gatti: false,
       bambini: true,
-      attivita: "media",
+      attivita: "adattabile",
       link: "https://asritalia.com/adotta-ora/blue",
       descrizione: "Ha bisogno di guida e tempo per adattarsi, no gatti."
     },
@@ -122,11 +122,11 @@ module.exports = async (req, res) => {
   }
 
   if (attivitaUtente === "Faccio passeggiate lunghe o escursioni regolarmente") {
-    caniCompatibili = caniCompatibili.filter((cane) => cane.attivita === "alta" || cane.attivita === "media");
+    caniCompatibili = caniCompatibili.filter((cane) => ["alta", "media", "adattabile"].includes(cane.attivita));
   } else if (attivitaUtente === "Passeggio ogni giorno ma non troppo a lungo") {
-    caniCompatibili = caniCompatibili.filter((cane) => cane.attivita !== "alta");
+    caniCompatibili = caniCompatibili.filter((cane) => ["media", "bassa", "adattabile"].includes(cane.attivita));
   } else if (attivitaUtente === "Ho uno stile di vita molto tranquillo/sedentario") {
-    caniCompatibili = caniCompatibili.filter((cane) => cane.attivita === "bassa");
+    caniCompatibili = caniCompatibili.filter((cane) => ["bassa", "adattabile"].includes(cane.attivita));
   }
 
   const elencoCani = caniCompatibili
