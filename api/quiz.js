@@ -15,15 +15,19 @@ module.exports = async (req, res) => {
 Le risposte dell'utente sono: ${JSON.stringify(risposte)}.
 
 Elenco dei cani disponibili (con link alla loro scheda):
-- Maya: giovane, tranquilla, vive con gatta, non adatta a bambini. Scheda: https://asritalia.com/adotta-ora/maya
-- Thor: sensibile ai rumori, non ama contesti urbani. Scheda: https://asritalia.com/adotta-ora/thor
-- Django: ha epilessia, adatto a contesti tranquilli. Scheda: https://asritalia.com/adotta-ora/django
-- Blue: ha bisogno di guida e tempo per adattarsi, no gatti. Scheda: https://asritalia.com/adotta-ora/blue
-- Ziggy: indipendente, richiede fiducia e spazio, non abituato ai bambini. Scheda: https://asritalia.com/adotta-ora/ziggy
-- Polpetta: ex maltrattato, no bambini o cani maschi. Scheda: https://asritalia.com/adotta-ora/polpetta
-- Ron, Draco e Sirius: fratelli equilibrati, vivono in campagna, abituati a persone e bambini. Scheda: https://asritalia.com/adotta-ora/ron-draco-sirius
+- Maya: femmina, giovane, tranquilla, vive con gatta, non adatta a bambini. Scheda: https://asritalia.com/adotta-ora/maya
+- Thor: maschio, sensibile ai rumori, non ama contesti urbani. Scheda: https://asritalia.com/adotta-ora/thor
+- Django: maschio, ha epilessia, adatto a contesti tranquilli. Scheda: https://asritalia.com/adotta-ora/django
+- Blue: maschio, ha bisogno di guida e tempo per adattarsi, no gatti. Scheda: https://asritalia.com/adotta-ora/blue
+- Ziggy: maschio, indipendente, richiede fiducia e spazio, non abituato ai bambini. Scheda: https://asritalia.com/adotta-ora/ziggy
+- Polpetta: maschio, ex maltrattato, no bambini o cani maschi. Scheda: https://asritalia.com/adotta-ora/polpetta
+- Ron, Draco e Sirius: maschi, fratelli equilibrati, vivono in campagna, abituati a persone e bambini. Scheda: https://asritalia.com/adotta-ora/ron-draco-sirius
 
-In base alle risposte dell'utente, suggerisci TUTTI i cani compatibili (anche più di uno se possibile). 
+Valuta la compatibilità tra il cane dell'utente e i cani in elenco anche in base al sesso e alla compatibilità con altri cani.
+Se l'utente ha un cane maschio che non va d'accordo con altri maschi, NON proporre cani maschi.
+Se ha una femmina che non va d'accordo con femmine, NON proporre cani femmine.
+
+In base alle risposte dell'utente, suggerisci TUTTI i cani compatibili (anche più di uno se possibile).
 Per ciascun cane suggerito, spiega brevemente perché potrebbe essere adatto e inserisci anche il link alla sua scheda.
 Se nessuno dei cani è compatibile, non suggerire alcun cane e rispondi con gentilezza e tono empatico, spiegando che al momento non ci sono cani adatti ma che potremmo ricontattarlo in futuro.
 Scrivi tutto in italiano e con tono dolce.
