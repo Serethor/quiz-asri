@@ -8,7 +8,7 @@ const QuizAdozione = () => {
 
   const domande = [
     { id: "haCani", testo: "Hai già altri cani?", opzioni: ["Sì", "No"] },
-    { id: "sessoCani", testo: "Se sì, sono maschi o femmine?", opzioni: ["Maschi", "Femmine", "Entrambi", "Non ho cani"] },
+    { id: "sessoCani", testo: "Se sì, sono maschi o femmine?", opzioni: ["Maschi", "Femmine", "Entrambi"] },
     { id: "compatibili", testo: "I tuoi cani vanno d'accordo con altri?", opzioni: ["Sì", "No", "Non so"] },
     { id: "haGatti", testo: "Hai gatti in casa?", opzioni: ["Sì", "No"] },
     { id: "bambini", testo: "Hai bambini piccoli?", opzioni: ["Sì", "No"] },
@@ -18,10 +18,19 @@ const QuizAdozione = () => {
   ];
 
   const handleRisposta = (valore) => {
-    const nuovaRisposta = { ...risposte, [domande[step].id]: valore };
+    const domandaCorrente = domande[step];
+    const nuovaRisposta = { ...risposte, [domandaCorrente.id]: valore };
     setRisposte(nuovaRisposta);
-    if (step + 1 < domande.length) {
-      setStep(step + 1);
+
+    let prossimoStep = step + 1;
+
+    // Logica per saltare domande se non ha cani
+    if (domandaCorrente.id === "haCani" && valore === "No") {
+      prossimoStep += 2; // salta sessoCani e compatibili
+    }
+
+    if (prossimoStep < domande.length) {
+      setStep(prossimoStep);
     } else {
       inviaRisposte(nuovaRisposta);
     }
