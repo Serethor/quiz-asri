@@ -7,6 +7,7 @@ module.exports = async (req, res) => {
 
   const { risposte } = req.body;
 
+  // Versione semplificata con dati statici
   const tuttiICani = [
     {
       nome: "Blue",
