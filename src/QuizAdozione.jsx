@@ -22,7 +22,10 @@ const QuizAdozione = () => {
     { id: "bambini", testo: "Hai bambini piccoli?", opzioni: ["Sì", "No"] },
     { id: "ambiente", testo: "Dove vivi?", opzioni: ["Campagna", "Periferia tranquilla", "Città"] },
     { id: "esperienza", testo: "Hai già esperienza con Aussie o razze simili?", opzioni: ["Sì", "No"] },
-    { id: "tipoCane", testo: "Che tipo di cane cerchi?", opzioni: ["Attivo", "Tranquillo", "Non importa"] }
+    { id: "tipoCane", testo: "Che tipo di cane cerchi?", opzioni: ["Attivo", "Tranquillo", "Non importa"] },
+    { id: "attivitaFisica", testo: "Quanto sei attivo nella tua routine?", opzioni: ["Faccio passeggiate lunghe o escursioni regolarmente", "Passeggio ogni giorno ma non troppo a lungo", "Ho uno stile di vita molto tranquillo/sedentario"] },
+    { id: "spazioEsterno", testo: "Che tipo di ambiente esterno hai a disposizione?", opzioni: ["Giardino privato", "Solo passeggiate al guinzaglio", "Aree libere e naturali vicino casa"] },
+    { id: "sport", testo: "Ti piacerebbe fare attività o sport con il tuo cane?", opzioni: ["Sì, assolutamente", "Solo per svago leggero", "No, preferisco relax e compagnia in casa"] }
   ];
 
   const handleRisposta = (valore) => {
@@ -31,10 +34,8 @@ const QuizAdozione = () => {
     setRisposte(nuovaRisposta);
 
     let prossimoStep = step + 1;
-
-    // Salta sessoCani, stessoSesso, sessoOpposto se non ha cani
     if (domandaCorrente.id === "haCani" && valore === "No") {
-      prossimoStep += 3;
+      prossimoStep += 3; // salta sessoCani, stessoSesso, sessoOpposto
     }
 
     if (prossimoStep < domande.length) {
