@@ -11,7 +11,7 @@ module.exports = async (req, res) => {
 
   const { risposte } = req.body;
 
-  const prompt = `
+ const prompt = `
 Le risposte dell'utente sono: ${JSON.stringify(risposte)}.
 
 Elenco dei cani disponibili (con link alla loro scheda):
@@ -24,10 +24,11 @@ Elenco dei cani disponibili (con link alla loro scheda):
 - Ron, Draco e Sirius: fratelli equilibrati, vivono in campagna, abituati a persone e bambini. Scheda: https://asritalia.com/adotta-ora/ron-draco-sirius
 
 In base alle risposte dell'utente, suggerisci TUTTI i cani compatibili (anche più di uno se possibile). 
-Per ciascun cane suggerito, spiega brevemente perché potrebbe essere adatto e inserisci anche il link alla sua scheda.
+Per ciascun cane suggerito, spiega brevemente perché potrebbe essere adatto e inserisci anche il link alla sua scheda, formattato come link HTML cliccabile.
 Se nessuno dei cani è compatibile, rispondi con gentilezza che al momento non ci sono cani perfetti ma potremmo ricontattarlo in futuro.
 Scrivi tutto in tono dolce, empatico e in italiano.
 `;
+
 
   try {
     const completion = await openai.chat.completions.create({
