@@ -11,41 +11,96 @@ module.exports = async (req, res) => {
 
   const { risposte } = req.body;
 
+  const tuttiICani = [
+    {
+      nome: "Maya",
+      sesso: "femmina",
+      compatibileCon: ["maschi"],
+      link: "https://asritalia.com/adotta-ora/maya",
+      descrizione: "Maya è una femmina tranquilla, vive con gatta, non adatta a bambini."
+    },
+    {
+      nome: "Thor",
+      sesso: "maschio",
+      compatibileCon: ["femmine"],
+      link: "https://asritalia.com/adotta-ora/thor",
+      descrizione: "Dolce e sensibile ai rumori, non ama i contesti urbani."
+    },
+    {
+      nome: "Django",
+      sesso: "maschio",
+      compatibileCon: ["femmine", "gatti"],
+      link: "https://asritalia.com/adotta-ora/django",
+      descrizione: "Ha epilessia, adatto a contesti tranquilli."
+    },
+    {
+      nome: "Blue",
+      sesso: "maschio",
+      compatibileCon: ["femmine"],
+      link: "https://asritalia.com/adotta-ora/blue",
+      descrizione: "Ha bisogno di guida e tempo per adattarsi, no gatti."
+    },
+    {
+      nome: "Ziggy",
+      sesso: "maschio",
+      compatibileCon: ["maschi", "femmine"],
+      link: "https://asritalia.com/adotta-ora/ziggy",
+      descrizione: "Indipendente, richiede fiducia e spazio, non abituato ai bambini."
+    },
+    {
+      nome: "Polpetta",
+      sesso: "maschio",
+      compatibileCon: ["femmine"],
+      link: "https://asritalia.com/adotta-ora/polpetta",
+      descrizione: "Ex maltrattato, no bambini o cani maschi."
+    },
+    {
+      nome: "Ron, Draco e Sirius",
+      sesso: "maschio",
+      compatibileCon: ["maschi", "femmine"],
+      link: "https://asritalia.com/adotta-ora/ron-draco-sirius",
+      descrizione: "Fratelli equilibrati, vivono in campagna, abituati a persone e bambini."
+    }
+  ];
+
+  let caniCompatibili = [...tuttiICani];
+
+  const haCani = risposte.haCani === "Sì";
+  const sessoCani = risposte.sessoCani;
+  const stessoSesso = risposte.stessoSesso;
+  const sessoOpposto = risposte.sessoOpposto;
+
+  if (haCani) {
+    const escludiMaschi =
+      (sessoCani === "Maschi" || sessoCani === "Entrambi") && stessoSesso === "No" ||
+      (sessoCani === "Femmine" || sessoCani === "Entrambi") && sessoOpposto === "No";
+
+    const escludiFemmine =
+      (sessoCani === "Femmine" || sessoCani === "Entrambi") && stessoSesso === "No" ||
+      (sessoCani === "Maschi" || sessoCani === "Entrambi") && sessoOpposto === "No";
+
+    caniCompatibili = caniCompatibili.filter((cane) => {
+      if (escludiMaschi && cane.sesso === "maschio") return false;
+      if (escludiFemmine && cane.sesso === "femmina") return false;
+      if (sessoCani === "Maschi" && !cane.compatibileCon.includes("maschi")) return false;
+      if (sessoCani === "Femmine" && !cane.compatibileCon.includes("femmine")) return false;
+      if (sessoCani === "Entrambi" && !cane.compatibileCon.includes("maschi") && !cane.compatibileCon.includes("femmine")) return false;
+      return true;
+    });
+  }
+
+  const elencoCani = caniCompatibili
+    .map(
+      (cane) => `- ${cane.nome}: ${cane.descrizione} <a href="${cane.link}" target="_blank">Vai alla scheda di ${cane.nome}</a>`
+    )
+    .join("\n");
+
   const prompt = `
-Le risposte dell'utente sono: ${JSON.stringify(risposte)}.
+Questi sono i cani compatibili in base alle risposte dell'utente:
+${elencoCani || "(nessun cane disponibile)"}
 
-Elenco dei cani disponibili (con link alla loro scheda):
-- Maya: femmina, giovane, tranquilla, vive con gatta, non adatta a bambini. Compatibile con maschi. Scheda: <a href="https://asritalia.com/adotta-ora/maya" target="_blank">Vai alla scheda di Maya</a>
-- Thor: maschio, sensibile ai rumori, non ama contesti urbani. Compatibile con femmine. Scheda: <a href="https://asritalia.com/adotta-ora/thor" target="_blank">Vai alla scheda di Thor</a>
-- Django: maschio, ha epilessia, adatto a contesti tranquilli. Compatibile con femmine e gatti. Scheda: <a href="https://asritalia.com/adotta-ora/django" target="_blank">Vai alla scheda di Django</a>
-- Blue: maschio, ha bisogno di guida e tempo per adattarsi, no gatti. Compatibile con femmine equilibrate. Scheda: <a href="https://asritalia.com/adotta-ora/blue" target="_blank">Vai alla scheda di Blue</a>
-- Ziggy: maschio, indipendente, richiede fiducia e spazio, non abituato ai bambini. Compatibile con maschi e femmine. Scheda: <a href="https://asritalia.com/adotta-ora/ziggy" target="_blank">Vai alla scheda di Ziggy</a>
-- Polpetta: maschio, ex maltrattato, no bambini o cani maschi. Compatibile solo con femmine equilibrate. Scheda: <a href="https://asritalia.com/adotta-ora/polpetta" target="_blank">Vai alla scheda di Polpetta</a>
-- Ron, Draco e Sirius: maschi, fratelli equilibrati, vivono in campagna, abituati a persone e bambini. Compatibili con altri cani. Scheda: <a href="https://asritalia.com/adotta-ora/ron-draco-sirius" target="_blank">Vai alla scheda di Ron, Draco e Sirius</a>
-
-🚨 REGOLA PRIORITARIA E VINCOLANTE:
-Prima di qualsiasi valutazione, DEVI analizzare il sesso del cane già presente nella famiglia dell'utente e la sua compatibilità:
-
-1. Se il cane dell'utente è MASCHIO e NON compatibile con altri MASCHI, escludi TUTTI i cani MASCHI.
-2. Se è FEMMINA e NON compatibile con altre FEMMINE, escludi TUTTE le FEMMINE.
-3. Se l'utente ha detto che il suo cane NON è compatibile con cani del sesso opposto, escludi quelli del sesso opposto.
-
-DOPO questa analisi, valuta anche se i cani del rescue sono compatibili con maschi, femmine o entrambi.
-Un cane non può essere suggerito se NON è compatibile con il sesso del cane dell'utente.
-
-SOLO se entrambe le compatibilità (utente verso rescue e rescue verso utente) sono OK, allora puoi passare alla valutazione dello stile di vita e altre preferenze.
-
-NON cercare eccezioni. Se un cane è incompatibile secondo il sesso o la sua compatibilità, non deve essere suggerito.
-
-🔎 SOLO dopo aver filtrato correttamente i cani in base al sesso e compatibilità, puoi valutare:
-- stile di vita (attivo, sedentario, sportivo, ecc.)
-- ambiente (giardino, città, campagna...)
-- desideri dell’utente (compagnia, escursioni, sport...)
-
-Suggerisci solo i cani realmente compatibili (anche più di uno se necessario).
-Per ciascun cane spiegane la compatibilità e inserisci il link alla scheda (in formato HTML cliccabile).
-Se nessun cane è adatto, non proporre nulla. Rispondi con empatia dicendo che al momento non ci sono cani perfetti per il profilo, ma che potremmo ricontattarlo in futuro.
-Scrivi tutto in italiano, in tono affettuoso e chiaro.
+Scrivi una risposta empatica e in tono dolce per l'utente.
+Se non ci sono cani disponibili, spiega gentilmente che al momento non ci sono opzioni adatte, ma che potremmo ricontattarlo in futuro.
 `;
 
   try {
