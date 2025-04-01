@@ -44,7 +44,7 @@ const QuizAdozione = () => {
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ risposte: risposteUtente })
+        body: JSON.stringify({ risposte: risposteUtente, multipli: true })
       });
       const data = await response.json();
       setRisultato(data.risultato);
