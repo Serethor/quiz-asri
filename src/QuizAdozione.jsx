@@ -1,9 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+
 const QuizAdozione = () => {
   const [step, setStep] = useState(0);
   const [risposte, setRisposte] = useState({});
   const [risultato, setRisultato] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const link = document.createElement("link");
+    link.href = "https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap";
+    link.rel = "stylesheet";
+    document.head.appendChild(link);
+  }, []);
 
   const domande = [
     { id: "haCani", testo: "Hai già altri cani?", opzioni: ["Sì", "No"] },
@@ -52,19 +60,28 @@ const QuizAdozione = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-100 via-white to-orange-50 p-6 font-[Montserrat]">
-      <div className="max-w-2xl mx-auto bg-white rounded-3xl shadow-xl p-6 transition-all duration-500">
+    <div style={{ fontFamily: "Montserrat, sans-serif", background: "linear-gradient(to bottom, #e0f2ff, #fff7ed)", minHeight: "100vh", padding: "2rem" }}>
+      <div style={{ maxWidth: "600px", margin: "0 auto", backgroundColor: "#fff", borderRadius: "2rem", boxShadow: "0 10px 30px rgba(0,0,0,0.1)", padding: "2rem" }}>
         {!risultato && !loading && (
-          <div className="text-center">
-            <h2 className="text-2xl md:text-3xl font-bold text-blue-700 mb-6">
-              {domande[step].testo}
-            </h2>
-            <div className="space-y-3">
+          <div>
+            <h2 style={{ fontSize: "1.8rem", color: "#2E5EAA", marginBottom: "1.5rem", textAlign: "center" }}>{domande[step].testo}</h2>
+            <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
               {domande[step].opzioni.map((opzione) => (
                 <button
                   key={opzione}
-                  className="w-full py-3 px-4 bg-orange-400 hover:bg-orange-500 text-white text-lg rounded-2xl shadow-md transition-all duration-300 ease-in-out"
                   onClick={() => handleRisposta(opzione)}
+                  style={{
+                    padding: "0.9rem 1.2rem",
+                    backgroundColor: "#F24333",
+                    color: "white",
+                    fontSize: "1.1rem",
+                    borderRadius: "1rem",
+                    border: "none",
+                    cursor: "pointer",
+                    transition: "background-color 0.3s ease"
+                  }}
+                  onMouseOver={(e) => (e.target.style.backgroundColor = "#c7372a")}
+                  onMouseOut={(e) => (e.target.style.backgroundColor = "#F24333")}
                 >
                   {opzione}
                 </button>
@@ -73,21 +90,12 @@ const QuizAdozione = () => {
           </div>
         )}
 
-        {loading && (
-          <p className="text-center text-xl font-semibold text-blue-700">
-            Analisi in corso... 🐾
-          </p>
-        )}
+        {loading && <p style={{ textAlign: "center", fontSize: "1.2rem", color: "#2E5EAA" }}>Analisi in corso... 🐾</p>}
 
         {risultato && (
-          <div className="text-left space-y-4 mt-6">
-            <h2 className="text-2xl md:text-3xl font-bold text-center text-orange-500">
-              🐾 Risultato del Quiz
-            </h2>
-            <div
-              className="prose prose-lg max-w-none whitespace-pre-line text-gray-800"
-              dangerouslySetInnerHTML={{ __html: risultato }}
-            />
+          <div style={{ marginTop: "2rem", backgroundColor: "#f1f5ff", padding: "1.5rem", borderRadius: "1.5rem", border: "2px dashed #2E5EAA" }}>
+            <h2 style={{ fontSize: "1.6rem", fontWeight: "700", textAlign: "center", marginBottom: "1rem", color: "#F24333" }}>🐶 Risultato del Quiz</h2>
+            <div style={{ whiteSpace: "pre-line", fontSize: "1.05rem", lineHeight: "1.6", color: "#333" }} dangerouslySetInnerHTML={{ __html: risultato }} />
           </div>
         )}
       </div>
