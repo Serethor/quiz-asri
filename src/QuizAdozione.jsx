@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import "tailwindcss/tailwind.css";
-
 const QuizAdozione = () => {
   const [step, setStep] = useState(0);
   const [risposte, setRisposte] = useState({});
