@@ -2,6 +2,7 @@ const cheerio = require("cheerio");
 const fetch = require("node-fetch");
 
 const baseUrl = "https://red-oryx-435931.hostingersite.com";
+const gistId = "1d3a74a2d7604ea09135de1fbfee9b67";
 
 function parseAsri(html) {
   const match = html.match(/<!--\s*ASRI([\s\S]*?)-->/i);
@@ -36,8 +37,7 @@ module.exports = async (req, res) => {
     });
 
     const output = [];
-
-    const limitedLinks = Array.from(links).slice(0, 3); // Limita a 3 pagine per test
+    const limitedLinks = Array.from(links).slice(0, 10); // puoi alzare questo limite più avanti
 
     for (const link of limitedLinks) {
       try {
@@ -62,8 +62,28 @@ module.exports = async (req, res) => {
       }
     }
 
-    res.setHeader("Content-Type", "application/json");
-    res.status(200).json(output);
+    // Aggiorna il Gist
+    const gistRes = await fetch(`https://api.github.com/gists/${gistId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.GIST_TOKEN}`,
+        "User-Agent": "ASRI-update-script"
+      },
+      body: JSON.stringify({
+        files: {
+          "cani.json": {
+            content: JSON.stringify(output, null, 2)
+          }
+        }
+      })
+    });
+
+    if (!gistRes.ok) {
+      throw new Error("Errore aggiornamento Gist");
+    }
+
+    res.status(200).json({ success: true, count: output.length });
   } catch (e) {
     console.error("Errore update-json:", e);
     res.status(500).json({ errore: true });
