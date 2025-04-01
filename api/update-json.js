@@ -37,9 +37,8 @@ module.exports = async (req, res) => {
     });
 
     const output = [];
-    const limitedLinks = Array.from(links).slice(0, 10); // puoi alzare questo limite più avanti
 
-    for (const link of limitedLinks) {
+    for (const link of Array.from(links)) {
       try {
         const resp = await fetch(link);
         const html = await resp.text();
@@ -62,7 +61,7 @@ module.exports = async (req, res) => {
       }
     }
 
-    // Aggiorna il Gist
+    // Scrivi nel Gist
     const gistRes = await fetch(`https://api.github.com/gists/${gistId}`, {
       method: "PATCH",
       headers: {
@@ -79,9 +78,7 @@ module.exports = async (req, res) => {
       })
     });
 
-    if (!gistRes.ok) {
-      throw new Error("Errore aggiornamento Gist");
-    }
+    if (!gistRes.ok) throw new Error("Errore aggiornamento Gist");
 
     res.status(200).json({ success: true, count: output.length });
   } catch (e) {
