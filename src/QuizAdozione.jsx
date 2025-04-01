@@ -24,9 +24,9 @@ const QuizAdozione = () => {
 
     let prossimoStep = step + 1;
 
-    // Logica per saltare domande se non ha cani
+    // Salta domande se non ho cani
     if (domandaCorrente.id === "haCani" && valore === "No") {
-      prossimoStep += 2; // salta sessoCani e compatibili
+      prossimoStep += 2;
     }
 
     if (prossimoStep < domande.length) {
@@ -72,11 +72,13 @@ const QuizAdozione = () => {
           </div>
         </div>
       )}
+
       {loading && <p className="text-center">Analisi in corso... 🐾</p>}
+
       {risultato && (
-        <div className="text-center">
-          <h2 className="text-xl font-bold mb-4">Risultato del Quiz</h2>
-          <p>{risultato}</p>
+        <div className="text-left space-y-4 mt-4 prose prose-lg max-w-none">
+          <h2 className="text-xl font-bold mb-2 text-center">Risultato del Quiz</h2>
+          <div dangerouslySetInnerHTML={{ __html: risultato }} />
         </div>
       )}
     </div>
