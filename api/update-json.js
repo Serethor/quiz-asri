@@ -4,7 +4,7 @@ const fetch = require("node-fetch");
 const baseUrl = "https://red-oryx-435931.hostingersite.com";
 
 function parseAsri(html) {
-  const match = html.match(/<!--\\s*ASRI([\\s\\S]*?)-->/i);
+  const match = html.match(/<!--\s*ASRI([\s\S]*?)-->/i);
   if (!match) return null;
 
   const lines = match[1].split("\n").map((l) => l.trim()).filter(Boolean);
@@ -37,7 +37,9 @@ module.exports = async (req, res) => {
 
     const output = [];
 
-    for (const link of links) {
+    const limitedLinks = Array.from(links).slice(0, 3); // Limita a 3 pagine per test
+
+    for (const link of limitedLinks) {
       try {
         const resp = await fetch(link);
         const html = await resp.text();
