@@ -16,6 +16,9 @@ module.exports = async (req, res) => {
       nome: "Maya",
       sesso: "femmina",
       compatibileCon: ["maschi"],
+      gatti: true,
+      bambini: false,
+      attivita: "media",
       link: "https://asritalia.com/adotta-ora/maya",
       descrizione: "Maya è una femmina tranquilla, vive con gatta, non adatta a bambini."
     },
@@ -23,6 +26,9 @@ module.exports = async (req, res) => {
       nome: "Thor",
       sesso: "maschio",
       compatibileCon: ["femmine"],
+      gatti: false,
+      bambini: false,
+      attivita: "bassa",
       link: "https://asritalia.com/adotta-ora/thor",
       descrizione: "Dolce e sensibile ai rumori, non ama i contesti urbani."
     },
@@ -30,6 +36,9 @@ module.exports = async (req, res) => {
       nome: "Django",
       sesso: "maschio",
       compatibileCon: ["femmine", "gatti"],
+      gatti: true,
+      bambini: true,
+      attivita: "bassa",
       link: "https://asritalia.com/adotta-ora/django",
       descrizione: "Ha epilessia, adatto a contesti tranquilli."
     },
@@ -37,6 +46,9 @@ module.exports = async (req, res) => {
       nome: "Blue",
       sesso: "maschio",
       compatibileCon: ["femmine"],
+      gatti: false,
+      bambini: true,
+      attivita: "media",
       link: "https://asritalia.com/adotta-ora/blue",
       descrizione: "Ha bisogno di guida e tempo per adattarsi, no gatti."
     },
@@ -44,6 +56,9 @@ module.exports = async (req, res) => {
       nome: "Ziggy",
       sesso: "maschio",
       compatibileCon: ["maschi", "femmine"],
+      gatti: false,
+      bambini: false,
+      attivita: "alta",
       link: "https://asritalia.com/adotta-ora/ziggy",
       descrizione: "Indipendente, richiede fiducia e spazio, non abituato ai bambini."
     },
@@ -51,6 +66,9 @@ module.exports = async (req, res) => {
       nome: "Polpetta",
       sesso: "maschio",
       compatibileCon: ["femmine"],
+      gatti: false,
+      bambini: false,
+      attivita: "media",
       link: "https://asritalia.com/adotta-ora/polpetta",
       descrizione: "Ex maltrattato, no bambini o cani maschi."
     },
@@ -58,6 +76,9 @@ module.exports = async (req, res) => {
       nome: "Ron, Draco e Sirius",
       sesso: "maschio",
       compatibileCon: ["maschi", "femmine"],
+      gatti: true,
+      bambini: true,
+      attivita: "alta",
       link: "https://asritalia.com/adotta-ora/ron-draco-sirius",
       descrizione: "Fratelli equilibrati, vivono in campagna, abituati a persone e bambini."
     }
@@ -69,6 +90,9 @@ module.exports = async (req, res) => {
   const sessoCani = risposte.sessoCani;
   const stessoSesso = risposte.stessoSesso;
   const sessoOpposto = risposte.sessoOpposto;
+  const haGatti = risposte.haGatti === "Sì";
+  const haBambini = risposte.bambini === "Sì";
+  const attivitaUtente = risposte.attivitaFisica;
 
   if (haCani) {
     const escludiMaschi =
@@ -89,11 +113,27 @@ module.exports = async (req, res) => {
     });
   }
 
+  if (haGatti) {
+    caniCompatibili = caniCompatibili.filter((cane) => cane.gatti);
+  }
+
+  if (haBambini) {
+    caniCompatibili = caniCompatibili.filter((cane) => cane.bambini);
+  }
+
+  if (attivitaUtente === "Faccio passeggiate lunghe o escursioni regolarmente") {
+    caniCompatibili = caniCompatibili.filter((cane) => cane.attivita === "alta" || cane.attivita === "media");
+  } else if (attivitaUtente === "Passeggio ogni giorno ma non troppo a lungo") {
+    caniCompatibili = caniCompatibili.filter((cane) => cane.attivita !== "alta");
+  } else if (attivitaUtente === "Ho uno stile di vita molto tranquillo/sedentario") {
+    caniCompatibili = caniCompatibili.filter((cane) => cane.attivita === "bassa");
+  }
+
   const elencoCani = caniCompatibili
     .map(
-      (cane) => `- ${cane.nome}: ${cane.descrizione} <a href="${cane.link}" target="_blank">Vai alla scheda di ${cane.nome}</a>`
+      (cane) => `- <strong>${cane.nome}</strong>: ${cane.descrizione}<br/><a href="${cane.link}" target="_blank">Vai alla scheda di ${cane.nome}</a><br/>`
     )
-    .join("\n");
+    .join("<br/>");
 
   const prompt = `
 Questi sono i cani compatibili in base alle risposte dell'utente:
@@ -101,6 +141,7 @@ ${elencoCani || "(nessun cane disponibile)"}
 
 Scrivi una risposta empatica e in tono dolce per l'utente.
 Se non ci sono cani disponibili, spiega gentilmente che al momento non ci sono opzioni adatte, ma che potremmo ricontattarlo in futuro.
+Usa HTML per i link. Scrivi in italiano.
 `;
 
   try {
