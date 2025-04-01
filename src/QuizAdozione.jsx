@@ -72,7 +72,7 @@ const QuizAdozione = () => {
                   onClick={() => handleRisposta(opzione)}
                   style={{
                     padding: "0.9rem 1.2rem",
-                    backgroundColor: "#F24333",
+                    backgroundColor: "#007FFF",
                     color: "white",
                     fontSize: "1.1rem",
                     borderRadius: "1rem",
@@ -80,8 +80,8 @@ const QuizAdozione = () => {
                     cursor: "pointer",
                     transition: "background-color 0.3s ease"
                   }}
-                  onMouseOver={(e) => (e.target.style.backgroundColor = "#c7372a")}
-                  onMouseOut={(e) => (e.target.style.backgroundColor = "#F24333")}
+                  onMouseOver={(e) => (e.target.style.backgroundColor = "#005bb5")}
+                  onMouseOut={(e) => (e.target.style.backgroundColor = "#007FFF")}
                 >
                   {opzione}
                 </button>
